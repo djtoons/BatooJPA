@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.collections;
 
 import java.sql.Connection;
@@ -30,6 +31,7 @@ import java.util.ListIterator;
 import javax.persistence.PersistenceException;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.batoo.common.BatooVersion;
 import org.batoo.common.util.BatooUtils;
 import org.batoo.jpa.core.impl.criteria.EntryImpl;
 import org.batoo.jpa.core.impl.instance.ManagedInstance;
@@ -50,6 +52,7 @@ import com.google.common.collect.Sets;
  * @since 2.0.0
  */
 public class ManagedList<X, E> extends ManagedCollection<E> implements List<E> {
+	private static final long serialVersionUID = BatooVersion.SERIAL_VERSION_UID;
 
 	/**
 	 * 

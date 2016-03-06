@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.test.ddl;
 
 import org.batoo.jpa.core.test.BaseCoreTest;
@@ -43,9 +44,29 @@ public class DdlTest extends BaseCoreTest {
 	 * @since 2.0.0
 	 */
 	@Test
-	public void testDdlDrop() {
+	public void testDdlTEST0_Drop() {
 		this.setupEmf().close();
 		this.setupEmf().close();
+	}
+
+	/**
+	 * Tests the ddl create mode.
+	 * 
+	 * @since 2.0.0
+	 */
+	@Test
+	public void testDdlTEST1_Create() {
+		this.setupEmf("create").close();
+	}
+
+	/**
+	 * Tests the ddl none mode.
+	 * 
+	 * @since 2.0.0
+	 */
+	@Test
+	public void testDdlTEST2_None() {
+		this.setupEmf("none").close();
 	}
 
 	/**
@@ -54,7 +75,7 @@ public class DdlTest extends BaseCoreTest {
 	 * @since 2.0.0
 	 */
 	@Test
-	public void testDdlUpdate() {
+	public void testDdlTEST3_Update() {
 		this.setupEmf("update1").close();
 		this.setupEmf("update2").close();
 	}

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.model.mapping;
 
 import java.sql.Connection;
@@ -397,7 +398,7 @@ public abstract class AssociationMappingImpl<Z, X, Y> extends AbstractMapping<Z,
 
 			final EntityTypeImpl<Y> entity = metamodel.entity(bindableType);
 
-			this.ownerSelect = this.isOwner() || (this.getAttribute().getPersistentAttributeType() == PersistentAttributeType.MANY_TO_MANY);
+			this.ownerSelect = this.isOwner() || PersistentAttributeType.MANY_TO_MANY == getAttribute().getPersistentAttributeType();
 			if (this.ownerSelect) {
 				return this.generateOwnerSelectCriteria(metamodel, cb, bindableType, entity);
 			}

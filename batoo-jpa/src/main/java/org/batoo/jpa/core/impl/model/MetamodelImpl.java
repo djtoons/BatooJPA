@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.model;
 
 import java.io.Serializable;
@@ -321,7 +322,7 @@ public class MetamodelImpl implements Metamodel {
 
 	/**
 	 * 
-	 * @param sqlResultSetMapping
+	 * @param sqlResultSetMappings
 	 * @since 2.0.1
 	 */
 	private void addSqlResultSetMappings(List<SqlResultSetMappingMetadata> sqlResultSetMappings) {
@@ -365,14 +366,19 @@ public class MetamodelImpl implements Metamodel {
 	 * @since 2.0.1
 	 */
 	public void checkTables() {
-		final Map<String, AbstractTable> tableNames = Maps.newHashMap();
+		final Map<String, AbstractTable> entityTableNames = Maps.newHashMap();
+		final Map<String, AbstractTable> joinTableNames = Maps.newHashMap();
 		for (final AbstractTable table : this.getAllTables()) {
-			final AbstractTable existing = tableNames.put(table.getName(), table);
-
-			if (existing != null) {
-				throw new MappingException("Duplicate table names " + this.getTableDesc(existing) + ", " + this.getTableDesc(table));
-			}
-		}
+            final AbstractTable existing;
+            if(table instanceof EntityTable){
+                existing = entityTableNames.put(table.getName(), table);
+            }else {
+                existing = joinTableNames.put(table.getName(), table);
+            }
+            if (existing != null) {
+                throw new MappingException("Duplicate table names " + this.getTableDesc(existing) + ", " + this.getTableDesc(table));
+            }
+        }
 	}
 
 	/**
@@ -716,7 +722,7 @@ public class MetamodelImpl implements Metamodel {
 			return "SecondaryTable[" + secondaryTable.getName() + " " + secondaryTable.getEntity().getJavaType().getName() + "]";
 		}
 
-		final EntityTable entityTable = (SecondaryTable) table;
+		final EntityTable entityTable = (EntityTable) table;
 
 		return "EntityTable[" + entityTable.getName() + " " + entityTable.getEntity().getJavaType().getName() + "]";
 	}
@@ -887,6 +893,10 @@ public class MetamodelImpl implements Metamodel {
 	 * @since 2.0.0
 	 */
 	public void performSequencesDdl(DataSource datasource, DDLMode ddlMode) {
+		if ((ddlMode == DDLMode.NONE)) {
+			return;
+		}
+
 		for (final SequenceGenerator sequenceGenerator : this.sequenceGenerators.values()) {
 			MetamodelImpl.LOG.info("Performing DDL operations for sequence generators for {0}, mode {1}", sequenceGenerator.getName(), ddlMode);
 
@@ -905,6 +915,10 @@ public class MetamodelImpl implements Metamodel {
 	 * @since 2.0.0
 	 */
 	public void performTableGeneratorsDdl(DataSource datasource, DDLMode ddlMode) {
+		if ((ddlMode == DDLMode.NONE)) {
+			return;
+		}
+
 		for (final TableGenerator tableGenerator : this.tableGenerators.values()) {
 			MetamodelImpl.LOG.info("Performing DDL operations for sequence generators for mode table {1}, mode {0}", tableGenerator.getName(), ddlMode);
 

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.model.attribute;
 
 import java.lang.reflect.Field;
@@ -124,10 +125,11 @@ public abstract class PluralAttributeImpl<X, C, E> extends AttributeImpl<X, C> i
 
 		if ((metadata instanceof AssociationAttributeMetadata) && StringUtils.isNotBlank(((AssociationAttributeMetadata) metadata).getTargetEntity())) {
 			try {
-				this.bindableJavaType = (Class<E>) declaringType.getMetamodel().getEntityManagerFactory().getClassloader().loadClass(((AssociationAttributeMetadata) metadata).getTargetEntity());
+				final ClassLoader classloader = declaringType.getMetamodel().getEntityManagerFactory().getClassloader();
+				this.bindableJavaType = (Class<E>) classloader.loadClass(((AssociationAttributeMetadata) metadata).getTargetEntity());
 			}
 			catch (final ClassNotFoundException e) {
-				throw new MappingException("Target enttity class not found", metadata.getLocator());
+				throw new MappingException("Target entity class not found", metadata.getLocator());
 			}
 		}
 		else {

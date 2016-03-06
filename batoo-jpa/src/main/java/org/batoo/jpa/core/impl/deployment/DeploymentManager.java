@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.deployment;
 
 import java.util.Collection;
@@ -37,7 +38,7 @@ import org.batoo.common.BatooException;
 import org.batoo.common.log.BLogger;
 import org.batoo.jpa.core.impl.model.MetamodelImpl;
 import org.batoo.jpa.core.impl.model.TypeImpl;
-import org.batoo.jpa.core.util.IncrementalNamingThreadFactory;
+import org.batoo.common.util.IncrementalNamingThreadFactory;
 import org.batoo.jpa.parser.metadata.NamedQueryMetadata;
 
 import com.google.common.base.Function;

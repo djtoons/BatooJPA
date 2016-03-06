@@ -1,48 +1,54 @@
-<!-- 
+<!--
+  ~ Copyright (c) 2012-2013, Batu Alp Ceylan
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU
+  ~ Lesser General Public License, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public License
+  ~ along with this distribution; if not, write to:
+  ~ Free Software Foundation, Inc.
+  ~ 51 Franklin Street, Fifth Floor
+  ~ Boston, MA  02110-1301  USA
+  -->
 
-	Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- 
-	This copyrighted material is made available to anyone wishing to use, modify,
-	copy, or redistribute it subject to the terms and conditions of the GNU
-	Lesser General Public License, as published by the Free Software Foundation.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-	or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
-	for more details.
-
-	You should have received a copy of the GNU Lesser General Public License
-	along with this distribution; if not, write to:
-	Free Software Foundation, Inc.
-	51 Franklin Street, Fifth Floor
-	Boston, MA  02110-1301  USA
-
- -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>parent</artifactId>
+		<artifactId>batoo-jpa-parent</artifactId>
 		<groupId>org.batoo.jpa</groupId>
-		<version>2.0.1.0-SNAPSHOT</version>
-	</parent>
+		<version>2.0.1.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+	<packaging>bundle</packaging>
 
 	<artifactId>batoo-jpa</artifactId>
 	<name>Batoo Persistence Core</name>
 
-	<build>
-		<testResources>
-			<testResource>
-				<directory>src/test/java</directory>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<includes>
-					<include>**/**</include>
-				</includes>
-			</testResource>
-		</testResources>
+    <properties>
+        <!-- needed for checkstyle/findbugs -->
+        <main.basedir>${project.parent.basedir}</main.basedir>
+    </properties>
 
-		<plugins>
+	<build>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+            </testResource>
+        </testResources>
+        <plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -58,63 +64,40 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.7.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<createSourcesJar>true</createSourcesJar>
-							<artifactSet>
-								<includes>
-									<include>org.batoo.common:*</include>
-									<include>org.batoo.jpa:*</include>
-								</includes>
-								<excludes>
-									<exclude>*:persistence-api</exclude>
-								</excludes>
-							</artifactSet>
-						</configuration>
-					</execution>
-				</executions>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator>org.batoo.jpa.core.osgi.PersistenceActivator</Bundle-Activator>
+						<Export-Package>
+							org.batoo.*
+						</Export-Package>
+						<Import-Package>
+							com.jolbox.bonecp;resolution:=optional,
+							org.objectweb.asm.*;version="[3.3,4)",
+							!org.batoo.*,
+							!sun.*,
+							*
+						</Import-Package>
+					</instructions>
+				</configuration>
 			</plugin>
-		</plugins>
-	</build>
 
-	<dependencies>
+
+        </plugins>
+    </build>
+
+    <dependencies>
 		<!-- Internal Dependencies -->
 		<dependency>
 			<groupId>org.batoo.jpa</groupId>
 			<artifactId>persistence-api</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>batoo-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>batoo-jpa-spi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>batoo-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>parser</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>jpql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.batoo.jpa</groupId>
-			<artifactId>batoo-common</artifactId>
 		</dependency>
 
 		<dependency>
@@ -147,14 +130,14 @@
 			</exclusions>
 		</dependency>
 
-		<!-- BoneCP -->
-		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		<!-- HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP-java6</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- ASM -->
+        <!-- ASM -->
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm</artifactId>
@@ -190,7 +173,15 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
+        <!-- JBoss SPI -->
+        <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-jpa-spi</artifactId>
+            <version>7.1.1.Final</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 		</dependency>
@@ -286,6 +277,30 @@
 			<artifactId>commons-beanutils</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
+    <profiles>
+        <profile>
+            <id>run-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration combine.self="override">
+                            <skip>false</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 </project>

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.manager;
 
 import java.lang.reflect.Method;
@@ -30,6 +31,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.transaction.TransactionManager;
 
+import org.batoo.common.BatooVersion;
 import org.batoo.common.log.BLogger;
 import org.batoo.common.log.BLoggerFactory;
 import org.batoo.jpa.parser.PersistenceParser;
@@ -43,6 +45,7 @@ import com.google.common.base.Splitter;
  * @since 2.0.0
  */
 public class JtaEntityManagerFactoryImpl extends EntityManagerFactoryImpl {
+	private static final long serialVersionUID = BatooVersion.SERIAL_VERSION_UID;
 
 	private static final BLogger LOG = BLoggerFactory.getLogger(JtaEntityManagerFactoryImpl.class);
 

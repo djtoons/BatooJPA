@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2012 - Batoo Software ve Consultancy Ltd.
- * 
+ * Copyright (c) 2012-2013, Batu Alp Ceylan
+ *
  * This copyrighted material is made available to anyone wishing to use, modify,
  * copy, or redistribute it subject to the terms and conditions of the GNU
  * Lesser General Public License, as published by the Free Software Foundation.
@@ -16,6 +16,7 @@
  * 51 Franklin Street, Fifth Floor
  * Boston, MA  02110-1301  USA
  */
+
 package org.batoo.jpa.core.impl.collections;
 
 import java.io.Serializable;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.mutable.MutableBoolean;
+import org.batoo.common.BatooVersion;
 import org.batoo.common.util.BatooUtils;
 import org.batoo.jpa.core.impl.criteria.EntryImpl;
 import org.batoo.jpa.core.impl.instance.ManagedInstance;
@@ -52,6 +54,7 @@ import com.google.common.collect.Lists;
  * @since 2.0.0
  */
 public abstract class ManagedCollection<E> implements Serializable {
+	private static final long serialVersionUID = BatooVersion.SERIAL_VERSION_UID;
 
 	private transient boolean changed;
 	private final transient ManagedInstance<?> managedInstance;
@@ -265,7 +268,7 @@ public abstract class ManagedCollection<E> implements Serializable {
 			&& (this.inverse.getAttribute() instanceof PluralAttributeImpl) ? //
 			(PluralAssociationMappingImpl<?, ?, ?>) this.inverse : null;
 
-		// TODO needs to be overriden by ManagedMap
+		// TODO needs to be overridden by ManagedMap
 		// add the new children
 		for (int i = 0; i < mergedChildren.size(); i++) {
 			final E child = mergedChildren.get(i);
